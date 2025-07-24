@@ -1,0 +1,28 @@
+- name: Run Ansible inside Codespaces
+  hosts: localhost
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Ensure web root exists
+      file:
+        path: /var/www/html
+        state: directory
+        mode: '0755'
+
+    - name: Copy index.html
+      copy: 
+        src: files/index.html
+        dest: /var/www/html/index.html
+        mode: '0644'
+
+    - name: Install NGINX
+      package:
+        name: nginx
+        state: present
+
+    - name: Start and enable NGINX
+      service:
+        name: nginx
+        state: started
+        enabled: true
